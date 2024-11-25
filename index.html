@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://code.jquery.com/jquery-1.12.3.min.js"
+      integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="
+      crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <title>The Complete jQuery Course - Project Structure</title>
+  </head>
+  <body>
+    <div id="content">
+      <h1>The Complete jQuery Course - Project Structure</h1>
+
+      <div class="red-box">Red</div>
+      <div class="green-box">Green</div>
+      <div class="blue-box">Blue</div>
+      <div class="clear"></div>
+
+      <h2>Hi, I'm the Base Project!</h2>
+      <p>
+        Add elements here as you like to try out jQuery. This is your playground
+        to test out anything that comes into your mind.
+      </p>
+      <p>
+        <strong>OR:</strong> Copy this project structure into a new directory
+        first to create separate playgrounds for animations, manipulations,
+        event handlers etc.
+      </p>
+      <div class="container">
+        <!-- Add Button -->
+        <button id="add-new-btn" class="add-new-btn">Add</button>
+        <button id="delete-selected-btn" class="delete-selected-btn hidden">Remove Selected</button>
+
+        <!-- Information Table -->
+        <table id="info-table" class="info-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="check-all"/></th>
+              <th>STT</th>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Math Grade</th>
+              <th>Physics Grade</th>
+              <th>Chemical Grade</th>
+              <th>Average</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Các dòng dữ liệu sẽ được thêm vào đây -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">Average:</td>
+              <td id="avg-math">0</td>
+              <td id="avg-physics">0</td>
+              <td id="avg-chemistry">0</td>
+              <td id="avg-total">0</td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Popup Thêm Mới -->
+        <div id="popup_add" class="popup hidden">
+          <div class="popup-content">
+            <h2>Add Information</h2>
+            <form id="add-form">
+              <!-- Họ Tên -->
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+              <!-- Giới Tính -->
+              <div class="form-group">
+                <label>Gender:</label>
+                <div>
+                  <label
+                    ><input
+                      type="radio"
+                      name="gender"
+                      value="Male"
+                      required />Male</label
+                  >
+                  <label
+                    ><input
+                      type="radio"
+                      name="gender"
+                      value="Female" />Female</label
+                  >
+                </div>
+              </div>
+              <!-- Email -->
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="checkbox" id="email" name="email" />
+              </div>
+              <!-- Điểm Toán -->
+              <div class="form-group">
+                <label for="math">Math Grade:</label>
+                <input
+                  type="number"
+                  id="math"
+                  name="math"
+                  min="0"
+                  max="10"
+                  required />
+              </div>
+              <!-- Điểm Lý -->
+              <div class="form-group">
+                <label for="physics">Physics Grade</label>
+                <input
+                  type="number"
+                  id="physics"
+                  name="physics"
+                  min="0"
+                  max="10"
+                  required />
+              </div>
+              <!-- Điểm Hóa -->
+              <div class="form-group">
+                <label for="chemistry">Chemical Grade</label>
+                <input
+                  type="number"
+                  id="chemistry"
+                  name="chemistry"
+                  min="0"
+                  max="10"
+                  required />
+              </div>
+              <!-- Nút hành động -->
+              <div class="form-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Popup Edit -->
+        <div id="popup_edit" class="popup hidden">
+          <div class="popup-content">
+            <h2>Edit Information</h2>
+            <form id="edit-form">
+              <!-- Họ Tên -->
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name_edit" name="name" required />
+              </div>
+              <!-- Giới Tính -->
+              <div class="form-group">
+                <label>Gender:</label>
+                <div>
+                  <label
+                    ><input
+                      type="radio"
+                      name="gender_edit"
+                      value="Male"
+                      required />Male</label
+                  >
+                  <label
+                    ><input
+                      type="radio"
+                      name="gender_edit"
+                      value="Female" />Female</label
+                  >
+                </div>
+              </div>
+              <!-- Email -->
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="checkbox" id="email_edit" name="email" />
+              </div>
+              <!-- Điểm Toán -->
+              <div class="form-group">
+                <label for="math">Math Grade:</label>
+                <input
+                  type="number"
+                  id="math_edit"
+                  name="math"
+                  min="0"
+                  max="10"
+                  required />
+              </div>
+              <!-- Điểm Lý -->
+              <div class="form-group">
+                <label for="physics">Physics Grade</label>
+                <input
+                  type="number"
+                  id="physics_edit"
+                  name="physics"
+                  min="0"
+                  max="10"
+                  required />
+              </div>
+              <!-- Điểm Hóa -->
+              <div class="form-group">
+                <label for="chemistry">Chemical Grade</label>
+                <input
+                  type="number"
+                  id="chemistry_edit"
+                  name="chemistry"
+                  min="0"
+                  max="10"
+                  required />
+              </div>
+              <!-- Nút hành động -->
+              <div class="form-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="cancel-btn_edit">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Popup Confirmation -->
+        <div id="popup_confirm" class="popup hidden">
+          <div class="popup-content">
+            <h2>Confirmation</h2>
+            <p>Are you sure to delete this row?</p>
+            <div class="form-actions">
+              <button type="button" id="confirm-btn_confirmation">Yes</button>
+              <button type="button" id="cancel-btn_confirmation">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/script_table.js"></script>
+  </body>
+</html>
