@@ -1,115 +1,105 @@
-let data = [
-  {
-    id: 1,
-    name: "Nguyễn Văn A",
-    gender: "Male",
-    email: "Yes",
-    math: 8,
-    physics: 7,
-    chemistry: 9,
-  },
-  {
-    id: 2,
-    name: "Trần Thị B",
-    gender: "Female",
-    email: "No",
-    math: 6,
-    physics: 8,
-    chemistry: 7,
-  },
-  {
-    id: 3,
-    name: "Phạm Minh C",
-    gender: "Male",
-    email: "Yes",
-    math: 9,
-    physics: 9,
-    chemistry: 10,
-  },
-];
+// let data = [
+//   {
+//     id: 1,
+//     name: "Nguyễn Văn A",
+//     gender: "Male",
+//     email: "Yes",
+//     math: 8,
+//     physics: 7,
+//     chemistry: 9,
+//   },
+//   {
+//     id: 2,
+//     name: "Trần Thị B",
+//     gender: "Female",
+//     email: "No",
+//     math: 6,
+//     physics: 8,
+//     chemistry: 7,
+//   },
+//   {
+//     id: 3,
+//     name: "Phạm Minh C",
+//     gender: "Male",
+//     email: "Yes",
+//     math: 9,
+//     physics: 9,
+//     chemistry: 10,
+//   },
+// ];
+const data = JSON.parse(localStorage.getItem("table_demo"));
 
-console.log(data);
+if (!data) {
+  localStorage.setItem("table_demo", JSON.stringify([]));
+}
+
+function getData() {
+  return JSON.parse(localStorage.getItem("table_demo")) ;
+}
+
+function setData(newData) {
+  localStorage.setItem("table_demo", JSON.stringify(newData));
+}
 
 function renderTable() {
+  const data = getData();
   const $tbody = $("#info-table tbody");
-  $tbody.empty(); // Xóa bảng trước khi thêm lại dữ liệu mới
-  let totalMath = 0,
-    totalPhysics = 0,
-    totalChemistry = 0;
+  $tbody.empty();
 
-  // Kiểm tra nếu không có dữ liệu
   if (data.length === 0) {
-    $("#avg-math").text("0");
-    $("#avg-physics").text("0");
-    $("#avg-chemistry").text("0");
-    $("#avg-total").text("0");
-    return; // Dừng lại nếu không có dữ liệu
+    $("#avg-math, #avg-physics, #avg-chemistry, #avg-total").text("0");
+    return;
   }
 
-  data.forEach((student, index) => {
-    const avg = (
-      (student.math + student.physics + student.chemistry) /
-      3
-    ).toFixed(2);
+  let totalMath = 0, totalPhysics = 0, totalChemistry = 0;
 
+  data.forEach((student, index) => {
+    const avg = ((student.math + student.physics + student.chemistry) / 3).toFixed(2);
     totalMath += student.math;
     totalPhysics += student.physics;
     totalChemistry += student.chemistry;
 
-    // Thêm dữ liệu vào bảng
     $tbody.append(`
-          <tr data-id="${student.id}">
-            <td><input type="checkbox" name="selected"></td>
-            <td>${index + 1}</td>
-            <td>${student.name}</td>
-            <td>${student.gender}</td>
-            <td>${student.email}</td>
-            <td>${student.math}</td>
-            <td>${student.physics}</td>
-            <td>${student.chemistry}</td>
-            <td>${avg}</td>
-            <td>
-              <button class="editBtn">Edit</button>
-            </td>
-            <td>
-              <button class="deleteBtn">Remove</button>
-            </td>
-          </tr>
-        `);
+      <tr data-id="${student.id}">
+        <td><input type="checkbox" name="selected"></td>
+        <td>${index + 1}</td>
+        <td>${student.name}</td>
+        <td>${student.gender}</td>
+        <td>${student.email}</td>
+        <td>${student.math}</td>
+        <td>${student.physics}</td>
+        <td>${student.chemistry}</td>
+        <td>${avg}</td>
+        <td><button class="editBtn">Edit</button></td>
+        <td><button class="deleteBtn">Remove</button></td>
+      </tr>
+    `);
   });
 
   const totalStudents = data.length;
-  console.log("Re-render");
-
-  // Tính toán trung bình
   $("#avg-math").text((totalMath / totalStudents).toFixed(2));
   $("#avg-physics").text((totalPhysics / totalStudents).toFixed(2));
   $("#avg-chemistry").text((totalChemistry / totalStudents).toFixed(2));
-  $("#avg-total").text(
-    ((totalMath + totalPhysics + totalChemistry) / (totalStudents * 3)).toFixed(
-      2
-    )
-  );
+  $("#avg-total").text(((totalMath + totalPhysics + totalChemistry) / (totalStudents * 3)).toFixed(2));
 }
 
-function toggleDeleteButton() {
-  const anyChecked =
-    $("input[type='checkbox'][name='selected']:checked").length > 0;
 
-  if (anyChecked) {
+function toggleDeleteButton() {
+  const anyChecked = $("input[type='checkbox'][name='selected']:checked").length > 0;
+  const hasData = getData().length > 0;
+
+  if (anyChecked && hasData) {
     $("#delete-selected-btn").removeClass("hidden");
   } else {
     $("#delete-selected-btn").addClass("hidden");
   }
-  if (data.length === 0) {
-    $("#check-all").prop("checked", false);
-  } else {
-    const allChecked =
-      $("input[type='checkbox'][name='selected']").length ===
-      $("input[type='checkbox'][name='selected']:checked").length;
-    $("#check-all").prop("checked", allChecked);
-  }
+
+  const allChecked = $("input[type='checkbox'][name='selected']").length > 0 &&
+    $("input[type='checkbox'][name='selected']").length === $("input[type='checkbox'][name='selected']:checked").length;
+
+  $("#check-all").prop("checked", allChecked);
 }
+
 
 $(document).ready(function () {
   renderTable();
@@ -122,6 +112,7 @@ $(document).ready(function () {
   // Add information
   $("#add-form").on("submit", function (e) {
     e.preventDefault();
+    const data = getData()
     const formData = {
       id: data[data.length - 1]?.id ? data[data.length - 1].id + 1 : 1,
       name: $("#name").val(),
@@ -131,7 +122,8 @@ $(document).ready(function () {
       physics: parseFloat($("#physics").val()),
       chemistry: parseFloat($("#chemistry").val()),
     };
-    data.push(formData);
+    const updatedData = [...getData(), formData];
+    setData(updatedData);
     $("#popup_add").addClass("hidden");
     $("#add-form")[0].reset();
     renderTable();
@@ -163,6 +155,7 @@ $(document).ready(function () {
   // Save Change Data
   $("#edit-form").on("submit", function (e) {
     e.preventDefault();
+    const data = getData()
     const updatedStudent = {
       id: $("#popup_edit").data("id"),
       name: $("#name_edit").val(),
@@ -175,6 +168,7 @@ $(document).ready(function () {
     const index = data.findIndex((student) => student.id === updatedStudent.id);
     if (index !== -1) {
       data[index] = updatedStudent;
+      localStorage.setItem("table_demo", JSON.stringify([...data]));
     }
     $("#popup_edit").addClass("hidden");
     renderTable();
@@ -192,11 +186,13 @@ $(document).ready(function () {
     $("#popup_confirm").data("id", id);
     $("#popup_confirm").removeClass("hidden");
   });
+  // Click confirmation
   $(document).on("click", "#confirm-btn_confirmation", function () {
-    console.log($("#popup_confirm").data("id"));
-    data = data.filter(
+    const data = getData()
+    const newData = data.filter(
       (student) => student.id !== $("#popup_confirm").data("id")
     );
+    localStorage.setItem("table_demo", JSON.stringify(newData));
     $("#popup_confirm").addClass("hidden");
     renderTable();
   });
@@ -224,12 +220,14 @@ $(document).ready(function () {
   // Delete selected rows
   $(document).on("click", "#delete-selected-btn", function () {
     const selectedIds = [];
+    const data = getData()
     $("input[type='checkbox'][name='selected']:checked").each(function () {
       const row = $(this).closest("tr");
       const id = parseInt(row.data("id"));
       selectedIds.push(id);
     });
-    data = data.filter((student) => !selectedIds.includes(student.id));
+    const newData = data.filter((student) => !selectedIds.includes(student.id));
+    localStorage.setItem("table_demo", JSON.stringify(newData));
     renderTable();
     toggleDeleteButton();
   });
